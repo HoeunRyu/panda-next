@@ -1,0 +1,221 @@
+@import "../../../../shared/styles/color.css";
+
+#on-sale-items {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+}
+
+#on-sale-items .section-top {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+}
+
+.utility-box {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* SearchItems */
+#search-items-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  height: 42px;
+}
+
+#input-search-keyword {
+  width: 100%;
+  border-radius: 12px;
+  background-color: var(--gray100);
+  padding: 9px 0;
+  padding-left: 40px;
+  padding-right: 20px;
+  border: none;
+  color: var(--gray800);
+}
+
+input::placeholder {
+  color: var(--gray400);
+}
+
+#item-search-icon {
+  width: 15px;
+  height: 15px;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  left: 16px;
+}
+
+/* PostItems */
+#post-item-btn {
+  height: 42px;
+  background-color: var(--primary100);
+  border: none;
+  border-radius: 8px;
+  padding: 8px 23px;
+  text-decoration: none;
+  color: var(--gray100);
+  cursor: pointer;
+}
+
+/* SortItems */
+#sort-items-wrapper {
+  height: 42px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  border-radius: 12px;
+  border: 1px solid var(--gray200);
+  color: var(--gray800);
+  padding: 8px 20px;
+  cursor: pointer;
+}
+
+.sort-items-label {
+  display: block;
+}
+
+.sort-items-label.mobile {
+  display: none;
+}
+
+#dropdown-icon {
+  width: 24px;
+  height: 24px;
+}
+
+.dropdown-menu {
+  display: none;
+  position: absolute;
+  top: 50px;
+  right: 0px;
+  width: 130px;
+  background-color: #fff;
+  border: 1px solid var(--gray200);
+  border-radius: 12px;
+  overflow: hidden;
+  z-index: 2;
+}
+
+.dropdown-menu.show {
+  display: block;
+}
+
+.dropdown-option {
+  text-align: center;
+  border-bottom: 1px solid var(--gray200);
+  margin: 0 auto;
+  padding: 8px 0;
+  cursor: pointer;
+}
+
+.dropdown-option:last-child {
+  border-bottom: none;
+}
+
+/* ItemsCard */
+#on-sale-items .cards-box {
+  display: grid;
+  gap: 40px 24px;
+  grid-template-columns: repeat(5, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+}
+
+#on-sale-items .item-card {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+#on-sale-items .item-img {
+  width: 221px;
+  height: 221px;
+  border-radius: 16px;
+}
+
+/* PaginationItems */
+#pagination-box {
+  padding-top: 20px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.page-btn {
+  width: 40px;
+  height: 40px;
+  background-color: #fff;
+  border-radius: 50%;
+  border: 1px solid var(--gray200);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: var(--gray500);
+  cursor: pointer;
+}
+
+.arrow-img {
+  width: 16px;
+  height: 16px;
+}
+
+.page-btn.selected {
+  background-color: var(--primary100);
+  border: 1px solid var(--primary100);
+  color: var(--gray50);
+}
+
+/* 태블릿 사이즈 미디어쿼리 */
+@media (max-width: 1199px) {
+  #on-sale-items .cards-box {
+    gap: 40px 16px;
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* 모바일 사이즈 미디어쿼리 */
+@media (max-width: 743px) {
+  /* 상단 그리드 변경 */
+  #on-sale-items .section-top {
+    display: block;
+  }
+
+  #post-item-btn {
+    position: absolute;
+    top: -5px;
+    right: 0px;
+  }
+
+  .utility-box {
+    margin-top: 14px;
+    justify-content: space-between;
+    gap: 14px;
+  }
+
+  #sort-items-wrapper {
+    width: 42px;
+    height: 42px;
+    padding: 9px;
+  }
+
+  /* 상품 카드 ui 변경 */
+  #on-sale-items .cards-box {
+    gap: 32px 8px;
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  #on-sale-items .item-img {
+    width: 168px;
+    height: 168px;
+    border-radius: 12px;
+  }
+}

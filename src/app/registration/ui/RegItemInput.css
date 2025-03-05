@@ -1,0 +1,43 @@
+@import "../../../shared/styles/color.css";
+
+.input-wrapper {
+  display: flex;
+  flex-direction: column;
+  /* gap: 16px; */
+}
+
+.input-box,
+.textarea-box {
+  width: 100%;
+  color: var(--gray800);
+  background-color: var(--gray100);
+  border-radius: 12px;
+  border: none;
+  padding: 15px 24px;
+  margin-top: 16px;
+}
+
+.input-box::placeholder,
+.textarea-box::placeholder {
+  color: var(--gray400);
+}
+
+.textarea-box {
+  height: 280px;
+}
+
+.input-box.error,
+.textarea-box.error {
+  border: 1px solid var(--error);
+}
+
+.err-text {
+  display: none;
+  margin-top: 8px;
+  padding: 0 16px;
+  color: var(--error);
+}
+
+.err-text.show {
+  display: block;
+}

@@ -1,0 +1,67 @@
+.text-3xl {
+  font-family: pretendard;
+  font-size: 3.2rem;
+  line-height: 42px;
+}
+
+.text-2xl {
+  font-family: pretendard;
+  font-size: 2.4rem;
+  line-height: 32px;
+}
+
+.text-xl {
+  font-family: pretendard;
+  font-size: 2rem;
+  line-height: 32px;
+}
+
+.text-2lg {
+  font-family: pretendard;
+  font-size: 1.8rem;
+  line-height: 26px;
+}
+
+.text-lg {
+  font-family: pretendard;
+  font-size: 1.6rem;
+  line-height: 26px;
+}
+
+.text-md {
+  font-family: pretendard;
+  font-size: 1.4rem;
+  line-height: 24px;
+}
+
+.text-sm {
+  font-family: pretendard;
+  font-size: 1.3rem;
+  line-height: 22px;
+}
+
+.text-xs {
+  font-family: pretendard;
+  font-size: 1.2rem;
+  line-height: 18px;
+}
+
+.bold {
+  font-weight: 700;
+}
+
+.semibold {
+  font-weight: 600;
+}
+
+.medium {
+  font-weight: 500;
+}
+
+.regular {
+  font-weight: 400;
+}
+
+.text-xs .semibold {
+  line-height: 20px;
+}

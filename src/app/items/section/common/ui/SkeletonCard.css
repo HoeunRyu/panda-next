@@ -1,0 +1,43 @@
+@import "../../../../../shared/styles/color.css";
+
+/* SkeletonCard */
+@keyframes pulse {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.skeleton-card-text {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.skeleton-name {
+  height: 24px;
+  background-color: var(--gray200);
+  border-radius: 4px;
+  animation: pulse 0.5s ease-in-out infinite;
+}
+
+.skeleton-price {
+  height: 26px;
+  background-color: var(--gray200);
+  border-radius: 4px;
+  animation: pulse 0.5s ease-in-out infinite;
+}
+
+.skeleton-fav {
+  width: 42px;
+  height: 18px;
+  background-color: var(--gray200);
+  border-radius: 4px;
+  animation: pulse 0.5s ease-in-out infinite;
+}

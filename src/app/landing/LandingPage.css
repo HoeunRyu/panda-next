@@ -1,0 +1,211 @@
+@import "../../shared/styles/color.css";
+
+.bg-colored {
+  background-color: #cfe5ff;
+  width: 100%;
+  height: 540px;
+  display: flex;
+}
+
+.container {
+  width: 100%;
+  max-width: 1920px;
+  margin: 0 auto;
+}
+
+#top-box {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 7px;
+}
+
+.msg-box {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  align-items: flex-start;
+  margin: 40px 0;
+}
+
+.landing-title-box {
+  display: flex;
+  flex-direction: column;
+}
+
+.landing-title {
+  width: 100%;
+  font-size: 4rem;
+  font-weight: 700;
+  line-height: 56px;
+  color: var(--gray700);
+  margin: 0;
+}
+
+#items-btn {
+  font-size: 2rem;
+  font-weight: 600;
+  line-height: 32px;
+  text-align: center;
+  color: var(--gray50);
+  text-decoration: none;
+
+  width: 357px;
+  border-radius: 40px;
+  padding: 16px 124px;
+  background-color: var(--primary100);
+  margin-bottom: 60px;
+  cursor: pointer;
+}
+
+.panda-img {
+  width: 100%;
+  max-width: 746px;
+  height: auto;
+}
+
+.landing-main {
+  padding-bottom: 138px;
+}
+
+#bottom-box {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 69px;
+}
+
+#bottom-box > .msg-box {
+  display: flex;
+  align-items: center;
+  margin: 112.5px 0;
+}
+
+#bottom-box .landing-title-box {
+  margin-bottom: 60px;
+}
+
+/* tablet size */
+@media (max-width: 1199px) {
+  .bg-colored {
+    height: 771px;
+  }
+
+  /* 태블릿 사이즈에서 텍스트, 이미지 정렬 방향 전환 */
+  #top-box {
+    height: 100%;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    gap: 90px;
+  }
+
+  #top-box .msg-box {
+    align-items: center;
+    margin: 84px auto;
+    gap: 24px;
+  }
+
+  /* 태블릿 사이즈에서 타이틀 텍스트 줄바꿈 제거 */
+  .landing-title-box {
+    display: inline;
+  }
+
+  #items-btn {
+    margin: 0;
+  }
+
+  .landing-main {
+    width: 696px;
+    margin: 24px auto;
+    display: flex;
+    flex-direction: column;
+    gap: 52px;
+    padding-bottom: 56px;
+  }
+
+  .bg-colored.bottom {
+    height: 927px;
+    margin-top: 32px;
+  }
+
+  /* 태블릿 사이즈에서 텍스트, 이미지 정렬 방향 전환 */
+  #bottom-box {
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0;
+  }
+
+  #bottom-box > .msg-box {
+    justify-content: center;
+    margin-top: 201px;
+    margin-bottom: 0;
+  }
+
+  #bottom-box .landing-title {
+    text-align: center;
+    margin: 0;
+  }
+}
+
+/* mobile size */
+@media (max-width: 743px) {
+  .bg-colored {
+    height: 100%;
+  }
+
+  #top-box .msg-box {
+    margin: 48px auto;
+    gap: 18px;
+  }
+
+  /* 모바일 사이즈에서 타이틀 텍스트 줄바꿈 복구 */
+  #top-box .landing-title-box {
+    display: flex;
+    flex-direction: column;
+  }
+
+  #top-box .landing-title {
+    font-size: 3.2rem;
+    line-height: 44px;
+    text-align: center;
+  }
+
+  #items-btn {
+    font-size: 1.8rem;
+    line-height: 26px;
+    padding: 11px 71px;
+    width: 240px;
+    height: 48px;
+  }
+
+  /* 모바일 사이즈에서 여백 32px 제외 이미지 영역이 꽉 차도록 구현 */
+  .landing-main {
+    margin: 0;
+    max-width: 100%;
+    padding: 16px 16px 32px 16px;
+    gap: 40px;
+  }
+
+  .bg-colored.bottom {
+    height: auto;
+  }
+
+  #bottom-box {
+    gap: 10px;
+  }
+
+  #bottom-box > .msg-box {
+    margin: 120px auto;
+  }
+
+  #bottom-box .landing-title-box {
+    margin: 0;
+  }
+
+  #bottom-box .landing-title {
+    font-size: 3.2rem;
+    line-height: 44px;
+  }
+}

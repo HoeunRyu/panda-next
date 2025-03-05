@@ -1,0 +1,28 @@
+@import "../../../../../shared/styles/color.css";
+
+.item-card {
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.item-card-text {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  color: var(--gray800);
+}
+
+.fav-count-box {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+}
+
+.fav-heart-icon {
+  width: 16px;
+  height: 16px;
+}
+
+.fav-count {
+  color: var(--gray600);
+}

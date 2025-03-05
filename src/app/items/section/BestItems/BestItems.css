@@ -1,0 +1,35 @@
+#best-items {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+#best-items .cards-box {
+  display: flex;
+  gap: 24px;
+}
+
+#best-items .item-card {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+#best-items .item-img {
+  width: 282px;
+  height: 282px;
+  border-radius: 16px;
+}
+
+/* 태블릿 이하 사이즈 카드 이미지 반응형 구현 */
+@media (max-width: 1199px) {
+  #best-items .item-card {
+    gap: 10px;
+  }
+
+  #best-items .item-img {
+    width: 343px;
+    height: 343px;
+    border-radius: 19.46px;
+  }
+}
