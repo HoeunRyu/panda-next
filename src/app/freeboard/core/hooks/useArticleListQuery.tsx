@@ -7,15 +7,7 @@ import {
 import { useEffect, useMemo, useCallback } from "react";
 import { getArticleListAPI } from "../service/articleService";
 import { useSearchStore } from "./useSearchStore";
-
-export const articleKeys = {
-  all: ["articles"] as const,
-  best: (limit: number) => [...articleKeys.all, "best", limit] as const,
-  list: (params: { keyword: string; page: number; sort: string }) =>
-    [...articleKeys.all, "list", params] as const,
-  detail: (articleId: string) =>
-    [...articleKeys.all, "detail", articleId] as const,
-};
+import { articleKeys } from "@/shared/utils/queryKeys";
 
 export const useBestArticles = (limit: number) => {
   const sort = "favorite";

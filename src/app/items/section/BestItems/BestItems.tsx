@@ -1,62 +1,50 @@
-import "./BestItems.css";
+// import "./BestItems.css";
 import { ItemCard } from "../common/ui/ItemCard";
 import { SkeletonCard } from "../common/ui/SkeletonCard";
-import { ORDER_BY } from "../../../../shared/utils/APIs/getItemsListAPI";
 import { Typo } from "@/shared/Typo/Typo";
-import { useMediaQuery } from "@/shared/hooks/mediaQueryHook";
-import { useItemsFetch } from "../common/hooks/itemsFetchHook";
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { colorChips } from "@/shared/styles/colorChips";
-import { ScreenSizeType } from "@/shared/type";
-
-//sizeConfig
-const SCREEN_SIZES_TO_PAGE_SIZE: {
-  MOBILE: number;
-  TABLET: number;
-  DESKTOP: number;
-} = {
-  MOBILE: 1,
-  TABLET: 2,
-  DESKTOP: 4,
-};
+import { Stack, useMediaQuery } from "@mui/material";
+import { useCodeitBestItems } from "../common/hooks/useCodeitItemListQuery";
 
 export function BestItems(): React.ReactElement {
-  const screenSize: ScreenSizeType = useMediaQuery();
-  const limit: number = SCREEN_SIZES_TO_PAGE_SIZE[screenSize];
-  const [params, setParams] = useState<{
-    limit: number;
-    sort: string;
-  }>({
-    limit, //현재 screenSize에 해당하는 limit 쿼리로 전달
-    sort: ORDER_BY.FAVORITE.value, //정렬 기준: 좋아요순
-  });
+  const isMobile = useMediaQuery("(max-width: 774px)");
+  const isTablet = useMediaQuery("(max-width: 1200px)");
 
-  //screenSize가 변경될 때 쿼리의 limit만 업데이트
-  useEffect(() => {
-    setParams((prev) => ({ ...prev, limit }));
-  }, [limit]);
+  // 기본 4개 받아온 뒤에 화면 크기에 따라 보여줄 개수 결정
+  const { products, isLoading } = useCodeitBestItems(4);
+  const displayCount = isMobile ? 1 : isTablet ? 2 : 4;
+  const displayProducts = products.slice(0, displayCount);
 
-  //api호출
-  const { productList, isLoading } = useItemsFetch(params);
-
-  const isShowSkeleton = isLoading || !productList.length;
+  const isShowSkeleton = isLoading || !products.length;
 
   return (
-    <section id="best-items">
+    <Stack direction="column" gap="16px">
       <Typo
         className={"text20Bold"}
         content="베스트 상품"
         color={colorChips.gray800}
       />
-      <div className="cards-box">
+      <Stack sx={cardsBoxSx}>
         {isShowSkeleton
-          ? Array.from({ length: limit }).map((_, idx) => (
-              <SkeletonCard key={idx} />
+          ? Array.from({ length: displayCount }).map((_, idx) => (
+              <SkeletonCard key={idx} variant="best" />
             ))
-          : productList.map((product, idx) => (
-              <ItemCard product={product} key={idx} />
+          : displayProducts.map((product, idx) => (
+              <ItemCard key={idx} variant="best" product={product} />
             ))}
-      </div>
-    </section>
+      </Stack>
+    </Stack>
   );
 }
+
+const cardsBoxSx = {
+  width: "100%",
+  height: "fit-content",
+  display: "flex",
+  flexDirection: "row",
+  justifyContent: "center",
+  alignItems: "center",
+  // flexWrap: "wrap",
+  gap: "24px",
+};

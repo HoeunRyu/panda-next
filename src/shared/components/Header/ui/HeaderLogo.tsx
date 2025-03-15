@@ -17,13 +17,14 @@ export function HeaderLogo() {
             height={40}
           />
         )}
-        <Image
-          src={"/assets/logo_text.png"}
-          alt="로고 텍스트"
-          width={103}
-          height={50}
-          style={{ width: "auto", height: "auto" }}
-        />
+        <Stack sx={logoTextStyles}>
+          <Image
+            src={"/assets/logo_text.png"}
+            alt="로고 텍스트"
+            fill
+            style={{ objectFit: "contain", position: "absolute" }}
+          />
+        </Stack>
       </Stack>
     </Link>
   );
@@ -37,4 +38,10 @@ const logoStyles = {
   justifyContent: "space-between",
   alignItems: "center",
   gap: "8.6px",
+};
+
+const logoTextStyles = {
+  width: { xs: "81px", sm: "103px" },
+  height: { xs: "40px", sm: "50px" },
+  position: "relative",
 };

@@ -14,45 +14,43 @@ interface UsePaginationReturn {
 
 export function usePagination(
   totalPageCount: number,
+  currentPageProp: number,
   pagePerRange: number = 5
 ): UsePaginationReturn {
-  const [currentPage, setCurrentPage] = useState<number>(1); //현재 페이지
-  const [currentRange, setCurrentRange] = useState<number>(1); //현재 구간
+  // 현재 페이지를 props로 받아옴
+  const [currentRange, setCurrentRange] = useState<number>(
+    Math.ceil(currentPageProp / pagePerRange)
+  );
 
-  const totalRanges: number = Math.ceil(totalPageCount / pagePerRange); //전체 구간 수
-
-  //현재 구간의 시작과 끝 페이지 계산
+  const totalRanges: number = Math.ceil(totalPageCount / pagePerRange);
   const startPage: number = (currentRange - 1) * pagePerRange + 1;
-  const endPage: number = Math.min(currentRange * pagePerRange, totalPageCount); //마지막 구간에서는 있는 페이지까지만 버튼 생성
+  const endPage: number = Math.min(currentRange * pagePerRange, totalPageCount);
 
-  //현재 구간의 페이지 번호 리스트 배열로 만들기
   const pageNums: number[] = Array.from(
     { length: endPage - startPage + 1 },
     (_, idx) => startPage + idx
   );
 
-  //페이지 선택 핸들러
-  const handlePageClick = (page: number): void => {
-    setCurrentPage(page);
-  };
-
-  //구간 이동
+  // 구간 이동 시 자동으로 해당 구간의 첫 페이지로 이동
   const handlePrevClick = (): void => {
-    if (currentRange > 1) setCurrentRange(currentRange - 1);
+    if (currentRange > 1) {
+      setCurrentRange(currentRange - 1);
+    }
   };
 
   const handleNextClick = (): void => {
-    if (currentRange < totalRanges) setCurrentRange(currentRange + 1);
+    if (currentRange < totalRanges) {
+      setCurrentRange(currentRange + 1);
+    }
   };
 
   return {
-    currentPage,
+    currentPage: currentPageProp,
     currentRange,
     totalRanges,
     startPage,
     endPage,
     pageNums,
-    handlePageClick,
     handlePrevClick,
     handleNextClick,
   };

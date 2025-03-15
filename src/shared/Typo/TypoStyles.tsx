@@ -202,4 +202,30 @@ export const typographyStyles: TypoStyles = {
     fontWeight: 400,
     lineHeight: "150%",
   },
+  productName: {
+    fontFamily: "pretendard",
+    fontSize: "16px",
+    fontStyle: "normal",
+    fontWeight: 600,
+    lineHeight: "150%",
+    "@media (min-width: 744px)": {
+      fontSize: "20px",
+    },
+    "@media (min-width: 1200px)": {
+      fontSize: "24px",
+    },
+  },
+  productPrice: {
+    fontFamily: "pretendard",
+    fontSize: "24px",
+    fontStyle: "normal",
+    fontWeight: 600,
+    lineHeight: "150%",
+    "@media (min-width: 744px)": {
+      fontSize: "32px",
+    },
+    "@media (min-width: 1200px)": {
+      fontSize: "40px",
+    },
+  },
 };
