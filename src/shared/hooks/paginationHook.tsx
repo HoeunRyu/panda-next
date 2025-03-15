@@ -7,7 +7,6 @@ interface UsePaginationReturn {
   startPage: number;
   endPage: number;
   pageNums: number[];
-  handlePageClick: (page: number) => void;
   handlePrevClick: () => void;
   handleNextClick: () => void;
 }
