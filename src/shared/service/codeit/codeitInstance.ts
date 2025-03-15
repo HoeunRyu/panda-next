@@ -10,6 +10,11 @@ export const localStorageKeys = {
   refreshToken: "reft",
 };
 
+const getAccessToken = () => {
+  if (typeof window === "undefined") return null;
+  return localStorage.getItem(localStorageKeys.accessToken);
+};
+
 const AxiosDefault = (baseURL: string): AxiosInstance => {
   if (!instances[baseURL]) {
     const axiosInstance = createAxiosInstance(baseURL);
@@ -33,7 +38,7 @@ const createAxiosInstance = (baseURL: string) => {
 const requestInterceptor = (axiosInstance: AxiosInstance) => {
   axiosInstance.interceptors.request.use(
     function (config) {
-      const accessToken = localStorage.getItem(localStorageKeys.accessToken);
+      const accessToken = getAccessToken();
       if (accessToken) {
         config.headers.Authorization = `Bearer ${accessToken}`;
       }

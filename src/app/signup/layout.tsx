@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { localStorageKeys } from "@/shared/service/codeit/codeitInstance";
 import { useSnackbarStore } from "@/shared/store/useSnackbarStore";
 
@@ -9,11 +9,14 @@ import { useSnackbarStore } from "@/shared/store/useSnackbarStore";
 export default function Layout({ children }: { children: React.ReactNode }) {
   const router = useRouter();
   const { openSnackbar } = useSnackbarStore();
-
-  const accessToken = localStorage.getItem(localStorageKeys.accessToken);
+  const [accessToken, setAccessToken] = useState<string | null>(null);
 
   useEffect(() => {
-    if (accessToken) {
+    // localStorage 접근을 클라이언트 사이드로 이동
+    const token = localStorage.getItem(localStorageKeys.accessToken);
+    setAccessToken(token);
+
+    if (token) {
       router.replace("/items");
       openSnackbar("이미 로그인 되어있습니다.", "error");
     }
