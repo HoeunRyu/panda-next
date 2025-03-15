@@ -1,5 +1,5 @@
 import { AxiosResponse } from "axios";
-import { instance } from "./axiosInstance";
+import { instance } from "@/shared/utils/APIs/axiosInstance";
 import { GetProdApiQueryParams, ProductList, OrderByType } from "@/shared/type";
 
 /** 상품 목록 조회

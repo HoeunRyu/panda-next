@@ -39,7 +39,6 @@ export const ArticleDetails = ({ articleId }: { articleId: string }) => {
 
   const handleUpdate = () => {
     router.push(`/freeboard/${articleId}/edit`);
-    //TODO: 수정하기 페이지 추가하기
   };
 
   const handleDelete = () => {

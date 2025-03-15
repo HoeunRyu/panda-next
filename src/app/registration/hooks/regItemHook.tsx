@@ -1,8 +1,11 @@
 import { useState, useCallback } from "react";
-import { createItemAPI } from "../../../shared/utils/APIs/createItemAPI";
 import { useRouter } from "next/navigation";
 import { RegItemInputFields, ValidKey } from "../type";
-import { Product } from "@/shared/type";
+import { CodeitProduct } from "@/shared/types/codeitApiType";
+import { postCodeitProductAPI } from "../services/createCodeitItemApi";
+import { useSnackbarStore } from "@/shared/store/useSnackbarStore";
+import { codeitItemKeys } from "@/shared/utils/queryKeys";
+import { useQueryClient } from "@tanstack/react-query";
 
 //XXX:
 //1. input에서 받은 value를 body에 일단 담는다.
@@ -12,7 +15,7 @@ import { Product } from "@/shared/type";
 
 //input 유효성 검사 규칙
 //validate true일때 error
-const validRules: {
+export const validRules: {
   [key in ValidKey]: {
     validate: (value: string) => boolean;
     errMsg: string;
@@ -62,6 +65,8 @@ export const useRegItem = () => {
     tags: [],
   });
   const router = useRouter();
+  const { openSnackbar } = useSnackbarStore();
+  const queryClient = useQueryClient();
 
   //req보낼 body 업데이트
   const updateBody = useCallback(
@@ -130,13 +135,30 @@ export const useRegItem = () => {
   const usePostItem = useCallback(async (): Promise<void> => {
     try {
       const { name, description, price, tags } = body;
-      const reqBody = { name, description, price, tags };
-      const response: Product = await createItemAPI(reqBody);
-      // console.log("상품 등록 완료 :", response);
+
+      // XXX: 코드잇 상품 등록 api로 수정
+      const priceNumber = Number(price);
+      const descriptionString = description ?? "";
+      const reqBody = {
+        name,
+        description: descriptionString,
+        price: priceNumber,
+        tags,
+        images: [], // XXX: 추후 이미지 업로드 기능 추가 시 사용. 필수 필드라서 현재는 빈 배열로 전달
+      };
+      // const response: Product = await createItemAPI(reqBody);
+      const response: CodeitProduct = await postCodeitProductAPI(reqBody);
       const itemId = response.id;
+      queryClient.invalidateQueries({ queryKey: codeitItemKeys.all });
       router.push(`/items/${itemId}`);
-    } catch (error) {
-      // console.error("상품 등록하기 오류: ", error);
+    } catch (error: any) {
+      if (error?.response.data.message === "Unauthorized") {
+        openSnackbar("로그인 후 이용해주세요.", "error");
+        router.push("/login");
+      } else {
+        openSnackbar("다시 시도해주세요.", "error");
+      }
+      throw error;
     }
   }, [body]);
 

@@ -90,7 +90,6 @@ export default function Page() {
           router.push(`/freeboard/${id}`);
         },
         onError: (error) => {
-          console.error("게시글 수정 실패:", error);
           window.alert("게시글 수정에 실패했습니다.");
         },
       }

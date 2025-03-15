@@ -7,6 +7,7 @@ import {
   deleteCommentAPI,
 } from "@/shared/service/commentsService";
 import { Comment, CommentList } from "@/shared/type";
+import { commentKeys } from "../utils/queryKeys";
 export type CommentType = "articles" | "products";
 
 // 댓글 입력 및 등록
@@ -54,7 +55,7 @@ export const useCommentInput = (itemId: string, type: CommentType) => {
       setContent(""); // 입력 초기화
       // 댓글 목록 갱신
       await queryClient.invalidateQueries({
-        queryKey: ["comments", itemId, type],
+        queryKey: commentKeys.list(itemId, type),
       });
     } catch (error) {
       // console.error("댓글 등록 실패:", error);
@@ -77,7 +78,7 @@ export const useCommentInput = (itemId: string, type: CommentType) => {
 
 // 댓글 목록 조회 훅 (무한 스크롤)
 export const useCommentList = (itemId: string, type: CommentType) => {
-  const queryKey = ["comments", itemId, type];
+  const queryKey = commentKeys.list(itemId, type);
 
   const {
     data,

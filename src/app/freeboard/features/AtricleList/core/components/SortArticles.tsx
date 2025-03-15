@@ -1,5 +1,5 @@
 import { useResponseSort } from "@/shared/hooks/responseSortHook";
-import { ORDER_BY } from "@/shared/utils/APIs/getItemsListAPI";
+import { ORDER_BY } from "@/app/freeboard/core/service/articleService";
 import { OrderByItem } from "@/shared/type";
 import React from "react";
 import { Stack, useMediaQuery } from "@mui/material";

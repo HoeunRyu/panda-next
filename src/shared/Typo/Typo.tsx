@@ -30,7 +30,9 @@ export type TypoClassName =
   | "text13Medium"
   | "text12Semibold"
   | "text12Medium"
-  | "text12Regular";
+  | "text12Regular"
+  | "productName"
+  | "productPrice";
 
 interface CreateTypographyComponent extends TypographyProps {
   className: TypoClassName;

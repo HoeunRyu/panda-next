@@ -7,7 +7,7 @@ import {
   DeleteArticleApiProps,
 } from "../service/articleDetailService";
 import { Article } from "@/shared/type";
-import { articleKeys } from "@/app/freeboard/core/hooks/useArticleListQuery";
+import { articleKeys } from "@/shared/utils/queryKeys";
 
 export const useGetArticleDetail = (articleId: string) => {
   if (typeof articleId === "string") {

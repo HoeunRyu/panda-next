@@ -1,50 +1,69 @@
-import Link from "next/link";
-import { Typo } from "../../../Typo/Typo";
 import React from "react";
 import { colorChips } from "@/shared/styles/colorChips";
-import { Button, Stack } from "@mui/material";
-import Image from "next/image";
+import { Stack, useMediaQuery } from "@mui/material";
+import { useRouter } from "next/navigation";
+import { useUserStore } from "@/shared/store/useUserStore";
+import { CommonButton } from "../../Buttons/CommonButton";
+import { useDefaultImg } from "@/shared/hooks/useDefaultImg";
+import { Typo } from "@/shared/Typo/Typo";
 
-interface HeaderUserProps {
-  isLoggedIn: boolean;
-  handleClick: () => void;
-}
+export const HeaderUser = () => {
+  const isDesktop = useMediaQuery("(min-width: 744px)");
+  const { userInfo, isAuthenticated } = useUserStore();
+  const router = useRouter();
 
-export const HeaderUser: React.FC<HeaderUserProps> = ({
-  isLoggedIn,
-  handleClick,
-}) => {
+  const defaultUserProfile = "/assets/default_profile.png";
+  const { imgSrc, handleImgErr } = useDefaultImg(
+    userInfo?.image,
+    defaultUserProfile
+  );
+
+  const handleClickLoginBtn = () => {
+    router.push("/login");
+  };
+
+  if (!isAuthenticated) {
+    return (
+      <CommonButton
+        colorType="primary"
+        textColor={colorChips.gray100}
+        title="로그인"
+        borderRadius="8px"
+        width="fit-content"
+        height="42px"
+        padding="12px 23px"
+        onClick={handleClickLoginBtn}
+      />
+    );
+  }
+
   return (
-    <Stack sx={{ flexShrink: 0 }} onClick={handleClick}>
-      {/* TODO: 현재 버튼 클릭할떄마다 프로필이미지/로그인버튼 전환되는 상태 */}
-      {isLoggedIn ? (
-        <Image
-          src={"/assets/default_profile.png"}
+    <Stack direction="row" alignItems="center" gap={"6px"}>
+      <Stack sx={profileImgSx}>
+        <img
+          src={imgSrc}
           alt="프로필 사진"
           width={40}
           height={40}
+          onError={handleImgErr}
+          style={{ objectFit: "cover" }}
         />
-      ) : (
-        // TODO: 링크 수정하기 "/login"
-        <Link id="login-btn" href="/">
-          <Button variant="contained" sx={loginBtnStyle}>
-            <Typo
-              className={"text16Semibold"}
-              color={colorChips.gray100}
-              content="로그인"
-            />
-          </Button>
-        </Link>
+      </Stack>
+      {/* PC 화면에서만 닉네임 추가 */}
+      {isDesktop && (
+        <Typo
+          className="text18Regular"
+          color={colorChips.gray600}
+          content={userInfo?.nickname}
+        />
       )}
     </Stack>
   );
 };
 
-const loginBtnStyle = {
-  width: "100%",
-  height: "42px",
-  backgroundColor: colorChips.primary100,
-  borderRadius: "8px",
-  padding: "12px 23px",
-  border: "none",
+const profileImgSx = {
+  width: "40px",
+  height: "40px",
+  borderRadius: "50%",
+  border: `1px solid ${colorChips.gray200}`,
 };
