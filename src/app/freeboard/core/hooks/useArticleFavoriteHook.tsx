@@ -1,23 +1,21 @@
 import { useState, useEffect, useCallback } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import {
-  // postCodeitProductFavoriteAPI,
-  // deleteCodeitProductFavoriteAPI,
-  postProductLikeAPI,
-  deleteProductLikeAPI,
-} from "../services/productFavoriteService";
-import { codeitItemKeys } from "@/shared/utils/queryKeys";
+  postArticleLikeAPI,
+  deleteArticleLikeAPI,
+} from "../service/articleFavoriteService";
 import { handleApiError } from "@/shared/service/handleApiError";
+import { articleKeys } from "@/shared/utils/queryKeys";
 
-interface UseProductFavoriteProps {
-  productId: string;
+interface UseArticleFavoriteProps {
+  articleId: string;
   initialFavorite: boolean;
 }
 
-export const useProductFavoriteHook = ({
-  productId,
+export const useArticleFavoriteHook = ({
+  articleId,
   initialFavorite,
-}: UseProductFavoriteProps) => {
+}: UseArticleFavoriteProps) => {
   const [isFavorite, setIsFavorite] = useState(initialFavorite);
   const queryClient = useQueryClient();
 
@@ -26,7 +24,7 @@ export const useProductFavoriteHook = ({
   }, [initialFavorite]);
 
   const updateFavoriteCache = (newFavoriteStatus: boolean) => {
-    queryClient.setQueryData(codeitItemKeys.detail(productId), (old: any) => {
+    queryClient.setQueryData(articleKeys.detail(articleId), (old: any) => {
       if (!old) return old;
       return {
         ...old,
@@ -39,42 +37,38 @@ export const useProductFavoriteHook = ({
   };
 
   const saveFavoriteMutation = useMutation({
-    mutationFn: (productId: string) =>
-      // postCodeitProductFavoriteAPI({ productId }),
-      postProductLikeAPI({ productId }),
+    mutationFn: (articleId: string) => postArticleLikeAPI({ articleId }),
     onSuccess: () => {
       updateFavoriteCache(true);
       setIsFavorite(true);
     },
     onSettled: () => {
-      queryClient.invalidateQueries({ queryKey: codeitItemKeys.all });
+      queryClient.invalidateQueries({ queryKey: articleKeys.all });
     },
   });
 
   const deleteFavoriteMutation = useMutation({
-    mutationFn: (productId: string) =>
-      // deleteCodeitProductFavoriteAPI({ productId }),
-      deleteProductLikeAPI({ productId }),
+    mutationFn: (articleId: string) => deleteArticleLikeAPI({ articleId }),
     onSuccess: () => {
       updateFavoriteCache(false);
       setIsFavorite(false);
     },
     onSettled: () => {
-      queryClient.invalidateQueries({ queryKey: codeitItemKeys.all });
+      queryClient.invalidateQueries({ queryKey: articleKeys.all });
     },
   });
 
   const handleToggleFavorite = useCallback(async () => {
     try {
       if (isFavorite) {
-        await deleteFavoriteMutation.mutateAsync(productId);
+        await deleteFavoriteMutation.mutateAsync(articleId);
       } else {
-        await saveFavoriteMutation.mutateAsync(productId);
+        await saveFavoriteMutation.mutateAsync(articleId);
       }
     } catch (err) {
       handleApiError(err);
     }
-  }, [isFavorite, productId, deleteFavoriteMutation, saveFavoriteMutation]);
+  }, [isFavorite, articleId, deleteFavoriteMutation, saveFavoriteMutation]);
 
   return {
     isFavorite,

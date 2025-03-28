@@ -9,11 +9,27 @@ import { EditEllipsis } from "@/shared/components/EditEllipsis";
 import { formatDate } from "@/shared/utils/getFormattedDate";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { useArticleFavoriteHook } from "@/app/freeboard/core/hooks/useArticleFavoriteHook";
 
 export const ArticleDetails = ({ articleId }: { articleId: string }) => {
   const router = useRouter();
   const { data, isLoading } = useGetArticleDetail(articleId);
   const { mutate: deleteArticle } = useDeleteArticle();
+  const { isFavorite, handleToggleFavorite } = useArticleFavoriteHook({
+    articleId,
+    initialFavorite: data?.isLiked ?? false,
+  });
+
+  const handleUpdate = () => {
+    router.push(`/freeboard/${articleId}/edit`);
+  };
+
+  const handleDelete = () => {
+    if (window.confirm("정말 삭제하시겠습니까?")) {
+      deleteArticle({ articleId });
+      router.push("/freeboard");
+    }
+  };
 
   if (isLoading || !data) {
     return (
@@ -31,22 +47,10 @@ export const ArticleDetails = ({ articleId }: { articleId: string }) => {
     );
   }
 
-  const { title, content, favoritesCount, createdAt } = data;
-  //FIXME: 아직 user 정보가 없어서 임시 닉네임, 프로필 이미지 디폴트로 설정
-  const nickname = "총명한판다";
+  const { title, content, likeCount, createdAt, ownerNickname } = data;
+  const nickname = ownerNickname;
   const profileImg = "/assets/default_profile.png";
   const formattedDate = formatDate(createdAt);
-
-  const handleUpdate = () => {
-    router.push(`/freeboard/${articleId}/edit`);
-  };
-
-  const handleDelete = () => {
-    if (window.confirm("정말 삭제하시겠습니까?")) {
-      deleteArticle({ articleId });
-      router.push("/freeboard");
-    }
-  };
 
   return (
     <Stack sx={articleDetailsSx}>
@@ -88,9 +92,13 @@ export const ArticleDetails = ({ articleId }: { articleId: string }) => {
               borderRight: `1px solid ${colorChips.gray200}`,
             }}
           />
-          <Stack sx={favoriteCountSx}>
+          <Stack sx={favoriteCountSx} onClick={handleToggleFavorite}>
             <Image
-              src="/assets/ic_heart_gray5.svg"
+              src={
+                isFavorite
+                  ? "/assets/ic_heart_pink.svg"
+                  : "/assets/ic_heart_gray5.svg"
+              }
               alt="favorite"
               width={32}
               height={32}
@@ -98,7 +106,7 @@ export const ArticleDetails = ({ articleId }: { articleId: string }) => {
             />
             <Typo
               className="text16Medium"
-              content={favoritesCount.toString()}
+              content={likeCount.toString()}
               color={colorChips.gray500}
             />
           </Stack>

@@ -2,17 +2,19 @@ import "./ItemCard.css";
 import Link from "next/link";
 import { Typo } from "@/shared/Typo/Typo";
 import { colorChips } from "@/shared/styles/colorChips";
-import { CodeitProduct } from "@/shared/types/codeitApiType";
+// import { CodeitProduct } from "@/shared/types/codeitApiType";
 import React from "react";
 import Image from "next/image";
 import { Stack } from "@mui/material";
 import { useDefaultImg } from "@/shared/hooks/useDefaultImg";
+import { Product } from "@/shared/type";
 
 export function ItemCard({
   product,
   variant = "all",
 }: {
-  product: CodeitProduct;
+  // product: CodeitProduct;
+  product: Product;
   variant?: "best" | "all";
 }): React.ReactElement {
   const {
@@ -20,11 +22,18 @@ export function ItemCard({
     images: [productImg], //반환된 배열에서 첫번째 링크 대표 이미지로 사용
     name,
     price,
-    favoriteCount,
+    likeCount,
+    isLiked,
   } = product;
 
+  const formattedImage = productImg
+    ? `https://panda-prisma.onrender.com${productImg}`
+    : "";
   const defaultItemImg = "/assets/default_item.png";
-  const { imgSrc, handleImgErr } = useDefaultImg(productImg, defaultItemImg);
+  const { imgSrc, handleImgErr } = useDefaultImg(
+    formattedImage,
+    defaultItemImg
+  );
 
   const formattedPrice = `${new Intl.NumberFormat("ko-KR").format(price)}원`;
 
@@ -72,14 +81,18 @@ export function ItemCard({
           />
           <Stack direction="row" alignItems="center" gap="4px">
             <Image
-              src={"/assets/favorite_heart.png"}
+              src={
+                isLiked
+                  ? "/assets/ic_heart_pink.svg"
+                  : "/assets/ic_heart_gray5.svg"
+              }
               alt="좋아요 아이콘"
               width={16}
               height={16}
             />
             <Typo
               className={"text12Medium"}
-              content={favoriteCount.toString()}
+              content={likeCount.toString()}
               color={colorChips.gray600}
             />
           </Stack>

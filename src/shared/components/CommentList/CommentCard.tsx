@@ -16,7 +16,7 @@ interface CommentCardProps {
 export const CommentCard = ({ data, type }: CommentCardProps) => {
   const [isEditing, setIsEditing] = useState(false);
   const [editContent, setEditContent] = useState(data.content);
-  const { content, createdAt, id } = data;
+  const { writer, content, createdAt, id } = data;
   const { updateComment, deleteComment } = useCommentActions(type);
 
   const handleUpdate = () => {
@@ -29,7 +29,7 @@ export const CommentCard = ({ data, type }: CommentCardProps) => {
       await updateComment(id, editContent);
       setIsEditing(false);
     } catch (error) {
-      console.error("댓글 수정 실패:", error);
+      // console.error("댓글 수정 실패:", error);
       window.alert("댓글 수정에 실패했습니다.");
     }
   };
@@ -45,8 +45,8 @@ export const CommentCard = ({ data, type }: CommentCardProps) => {
     }
   };
 
-  //FIXME: 아직 user 정보가 없어서 임시 닉네임, 프로필 이미지 디폴트로 설정
-  const nickname = "똑똑한판다";
+  // 프로필 이미지 수정 기능 없어서 다 디폴트 이미지로 처리
+  const nickname = writer.nickname;
   const profileImg = "/assets/default_profile.png";
   const formattedDate = getRelativeTimeString(createdAt);
 

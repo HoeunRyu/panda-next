@@ -14,7 +14,8 @@ import {
 } from "@mui/material";
 import { InputErrorMsg } from "@/shared/components/Input/InputErrorMsg";
 import Image from "next/image";
-import { usePatchCodeitProduct } from "./core/hooks/usePatchCodeitProduct";
+import { usePatchProduct } from "./core/hooks/usePatchProduct";
+import { RegImgInput } from "@/app/registration/ui/RegImgInput";
 
 export default function Page() {
   const router = useRouter();
@@ -38,14 +39,17 @@ export default function Page() {
     errors,
     isLoading,
     isFormDisabled,
+    showMaxImageError,
     handleChange,
     handleBlur,
     handleKeyDown,
     handleTagInput,
     handleTagAdd,
     handleDeleteTag,
+    handleImageInput,
+    handleDeleteImage,
     handleClickUpdateProduct,
-  } = usePatchCodeitProduct({ id });
+  } = usePatchProduct({ id });
 
   if (isLoading) {
     return (
@@ -83,6 +87,14 @@ export default function Page() {
         </Stack>
 
         <Stack sx={patchProductFormStyle}>
+          <Stack sx={patchProductFormItemStyle}>
+            <RegImgInput
+              onClickFileInput={handleImageInput}
+              images={formData.imageUrls}
+              onClickDeleteImg={handleDeleteImage}
+              showMaxImageError={showMaxImageError}
+            />
+          </Stack>
           <Stack sx={patchProductFormItemStyle}>
             <Typo
               content="상품명"

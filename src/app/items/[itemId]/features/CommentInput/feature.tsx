@@ -7,7 +7,7 @@ import {
   InputBase,
   Stack,
 } from "@mui/material";
-import { useCodeitProductCommentInput } from "../../core/hooks/useProductCommentQuery";
+import { useCodeitProductCommentInput } from "../../core/hooks/useCodeitProductCommentQuery";
 
 interface CommentInputProps {
   itemId: string;

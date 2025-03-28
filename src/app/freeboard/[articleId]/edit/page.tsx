@@ -17,6 +17,7 @@ import {
   useUpdateArticle,
 } from "../core/hooks/useArticleDetailQuery";
 import { useState, useEffect } from "react";
+import { ArticleImgInput } from "../../core/components/ArticleImgInput";
 
 export default function Page() {
   const router = useRouter();
@@ -26,7 +27,11 @@ export default function Page() {
   const [formData, setFormData] = useState({
     title: "",
     content: "",
+    image: undefined as File | undefined,
+    imageUrl: undefined as string | undefined,
   });
+
+  const [showMaxImageError, setShowMaxImageError] = useState(false);
 
   // id가 없으면 early return
   if (!id) {
@@ -44,9 +49,11 @@ export default function Page() {
       setFormData({
         title: articleData.title,
         content: articleData.content,
+        image: undefined,
+        imageUrl: articleData.image || undefined,
       });
     }
-  }, [articleData?.title, articleData?.content]);
+  }, [articleData]);
 
   const titlePlaceholder = "제목을 입력해주세요";
   const contentPlaceholder = "내용을 입력해주세요";
@@ -76,14 +83,66 @@ export default function Page() {
     return !formData.title.trim() || !formData.content.trim();
   };
 
+  const handleImageInput = () => {
+    const fileInput = document.createElement("input");
+    fileInput.type = "file";
+    fileInput.accept = "image/*";
+
+    fileInput.onchange = (e: Event) => {
+      const files = (e.target as HTMLInputElement).files;
+      if (!files || !files[0]) return;
+
+      if (files[0].size > 5 * 1024 * 1024) {
+        window.alert("이미지 크기는 5MB 이하여야 합니다.");
+        return;
+      }
+
+      const imageUrl = URL.createObjectURL(files[0]);
+      setFormData((prev) => ({
+        ...prev,
+        image: files[0],
+        imageUrl,
+      }));
+    };
+
+    if (formData.image) {
+      setShowMaxImageError(true);
+      setTimeout(() => setShowMaxImageError(false), 3000);
+      return;
+    }
+
+    fileInput.click();
+  };
+
+  const handleDeleteImage = () => {
+    setFormData((prev) => {
+      if (prev.imageUrl && prev.image) {
+        URL.revokeObjectURL(prev.imageUrl);
+      }
+      return {
+        ...prev,
+        image: undefined,
+        imageUrl: undefined,
+      };
+    });
+  };
+
   const handleClickUpdateArticle = () => {
     if (isFormDisabled()) return;
+
+    const formDataObj = new FormData();
+    formDataObj.append("title", formData.title.trim());
+    formDataObj.append("content", formData.content.trim());
+    if (formData.image) {
+      formDataObj.append("images", formData.image);
+    }
 
     updateArticle(
       {
         articleId: id,
         title: formData.title.trim(),
         content: formData.content.trim(),
+        image: formData.image,
       },
       {
         onSuccess: () => {
@@ -174,6 +233,12 @@ export default function Page() {
               />
             </FormControl>
           </Stack>
+          <ArticleImgInput
+            onClickFileInput={handleImageInput}
+            imageUrl={formData.imageUrl}
+            onClickDeleteImg={handleDeleteImage}
+            showMaxImageError={showMaxImageError}
+          />
         </Stack>
       </Stack>
     </CommonLayout>

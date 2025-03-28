@@ -4,14 +4,23 @@ import { Button, FormControl, Input, InputBase, Stack } from "@mui/material";
 import { Typo } from "@/shared/Typo/Typo";
 import { colorChips } from "@/shared/styles/colorChips";
 import { CommonLayout } from "@/shared/layout/CommonLayout";
-import { useArticleList } from "../features/AtricleList/core/hooks/useArticleListHook";
+import { usePostArticleHook } from "../core/hooks/usePostArticleHook";
+import { ArticleImgInput } from "../core/components/ArticleImgInput";
 
 export default function Page() {
   const titlePlaceholder = "제목을 입력해주세요";
   const contentPlaceholder = "내용을 입력해주세요";
 
-  const { handleBlur, handleKeyDown, isFormDisabled, usePostArticle } =
-    useArticleList();
+  const {
+    handleBlur,
+    handleKeyDown,
+    isFormDisabled,
+    usePostArticle,
+    body,
+    handleImageInput,
+    handleDeleteImage,
+    showMaxImageError,
+  } = usePostArticleHook();
 
   return (
     <CommonLayout>
@@ -68,6 +77,12 @@ export default function Page() {
               />
             </FormControl>
           </Stack>
+          <ArticleImgInput
+            onClickFileInput={handleImageInput}
+            imageUrl={body.imageUrl}
+            onClickDeleteImg={handleDeleteImage}
+            showMaxImageError={showMaxImageError}
+          />
         </Stack>
       </Stack>
     </CommonLayout>

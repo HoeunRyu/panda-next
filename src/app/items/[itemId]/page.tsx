@@ -5,6 +5,8 @@ import { useParams } from "next/navigation";
 import { CommonLayout } from "@/shared/layout/CommonLayout";
 import { Features } from "./features";
 import { ReturnToListBtn } from "@/shared/components/CommentList/ReturnToListBtn";
+import { CommentInput } from "@/shared/components/CommentInput/CommentInput";
+import { CommentList } from "@/shared/components/CommentList/CommentList";
 
 export default function Page() {
   const params = useParams();
@@ -12,10 +14,13 @@ export default function Page() {
     ? params.itemId[0]
     : params.itemId;
 
-  //FIXME: 게시글 ID가 없는 경우 404나 알림 띄우는거 추가하면 좋을 듯
   if (!itemId) {
     return null;
   }
+
+  const commentInputLabel = "문의하기";
+  const commentInputPlaceholder =
+    "개인정보를 공유 및 요청하거나, 명예 훼손, 무단 광고, 불법 정보 유포시 모니터링 후 삭제될 수 있으며, 이에 대한 민형사상 책임은 게시자에게 있습니다.";
 
   const returnUrl = "/items";
 
@@ -24,8 +29,15 @@ export default function Page() {
       <Stack sx={itemDetailContainerStyle}>
         <Features.ProductDetails itemId={itemId} />
         <Stack sx={itemCommentsContainerStyle}>
-          <Features.CommentInput itemId={itemId} />
-          <Features.CommentList itemId={itemId} />
+          {/* <Features.CommentInput itemId={itemId} />
+          <Features.CommentList itemId={itemId} /> */}
+          <CommentInput
+            itemId={itemId}
+            type="products"
+            inputLabel={commentInputLabel}
+            placeholder={commentInputPlaceholder}
+          />
+          <CommentList itemId={itemId} type="products" />
           <ReturnToListBtn returnUrl={returnUrl} />
         </Stack>
       </Stack>

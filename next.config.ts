@@ -8,6 +8,7 @@ const nextConfig: NextConfig = {
       "cdsassets.apple.com",
       "encrypted-tbn3.gstatic.com",
       "blogs.nvidia.co.kr",
+      "panda-prisma.onrender.com",
     ],
   },
 };

@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "public/globals.css";
 import { QueryProvider } from "@/shared/providers/QueryProvider";
-import { AuthInitializer } from "@/shared/hooks/useInitializeAuth";
+// import { AuthInitializer } from "@/shared/hooks/useInitializeAuth";
 import { SnackbarAlert } from "@/shared/components/Snackbar/SnackbarAlert";
 import { ThemeProvider } from "@mui/material/styles";
 import { theme } from "@/shared/theme";
@@ -36,7 +36,8 @@ export default function RootLayout({
       <body className={pretendard.className}>
         <ThemeProvider theme={theme}>
           <QueryProvider>
-            <AuthInitializer />
+            {/* 로컬스토리지말고 쿠키로 변경해서 일단 사용x 유저정보 사용하는거 추가하면 주석해제 */}
+            {/* <AuthInitializer /> */}
             {children}
             <SnackbarAlert />
           </QueryProvider>

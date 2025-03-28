@@ -1,6 +1,6 @@
-import { codeitInstance } from "./codeitInstance";
+import { codeitInstance } from "./codeit/codeitInstance";
 import { handleApiError } from "./handleApiError";
-import { UserInfoResponse } from "./type";
+import { UserInfoResponse } from "./authTypes";
 
 export const getUserInfo = async (): Promise<UserInfoResponse> => {
   try {

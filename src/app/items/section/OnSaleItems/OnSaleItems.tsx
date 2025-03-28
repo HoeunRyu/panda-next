@@ -9,8 +9,9 @@ import { SkeletonCard } from "../common/ui/SkeletonCard";
 import { colorChips } from "@/shared/styles/colorChips";
 import { Stack, useMediaQuery, useTheme } from "@mui/material";
 import { useSearchStore } from "../common/hooks/useSearchStore";
-import { useCodeitItemList } from "../common/hooks/useCodeitItemListQuery";
+// import { useCodeitItemList } from "../common/hooks/useCodeitItemListQuery";
 import { useEffect } from "react";
+import { useItemList } from "../common/hooks/useItemListQuery";
 
 export function OnSaleItems() {
   const theme = useTheme();
@@ -19,7 +20,8 @@ export function OnSaleItems() {
   const pageSize = isMobile ? 4 : isTablet ? 6 : 10;
 
   const { updateParams, params } = useSearchStore();
-  const { products, totalCount, currentPage, isLoading } = useCodeitItemList();
+  // const { products, totalCount, currentPage, isLoading } = useCodeitItemList();
+  const { products, totalCount, currentPage, isLoading } = useItemList();
 
   // 화면 크기 변경 시 pageSize가 변경될 때만 업데이트
   useEffect(() => {

@@ -98,10 +98,10 @@ export const useLoginPost = () => {
       });
 
       // 로컬스토리지에 토큰 저장
-      setLocalStorage({
-        accessToken: data.accessToken,
-        refreshToken: data.refreshToken,
-      });
+      // setLocalStorage({
+      //   accessToken: data.accessToken,
+      //   refreshToken: data.refreshToken,
+      // });
 
       // 관련 쿼리 모두 무효화
       queryClient.invalidateQueries({ queryKey: commentKeys.all });
@@ -110,11 +110,11 @@ export const useLoginPost = () => {
 
       // 전역 user 데이터 업데이트
       changeCurrentUser({
-        id: data.user.id,
-        nickname: data.user.nickname,
-        image: data.user.image,
-        updatedAt: data.user.updatedAt,
-        createdAt: data.user.createdAt,
+        id: data.id,
+        nickname: data.nickname,
+        image: null,
+        updatedAt: data.updatedAt,
+        createdAt: data.createdAt,
       });
 
       // 전역 인증 상태 업데이트 -> 로그인 완료 시 헤더 프로필 변경

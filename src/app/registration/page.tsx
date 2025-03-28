@@ -7,6 +7,7 @@ import { TagWithClose } from "./ui/TagWithClose";
 import { useRegItem } from "./hooks/regItemHook";
 import { colorChips } from "@/shared/styles/colorChips";
 import React from "react";
+import { RegImgInput } from "./ui/RegImgInput";
 
 export default function Page(): React.ReactElement {
   const {
@@ -16,6 +17,9 @@ export default function Page(): React.ReactElement {
     usePostItem,
     isFormDisabled,
     inputFields,
+    handleImageInput,
+    handleDeleteImage,
+    showMaxImageError,
   } = useRegItem();
 
   return (
@@ -40,6 +44,12 @@ export default function Page(): React.ReactElement {
 
       <div className="section-main">
         <div className="input-container">
+          <RegImgInput
+            images={body.imageUrls}
+            onClickFileInput={handleImageInput}
+            onClickDeleteImg={handleDeleteImage}
+            showMaxImageError={showMaxImageError}
+          />
           {inputFields.map((field) => (
             <RegItemInput
               key={field.field}

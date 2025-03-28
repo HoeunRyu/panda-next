@@ -13,6 +13,19 @@ export const articleKeys = {
     [...articleKeys.all, "detail", articleId] as const,
 };
 
+export const productKeys = {
+  all: ["products"] as const,
+  best: (limit: number) => [...productKeys.all, "best", limit] as const,
+  list: (params: {
+    keyword: string;
+    page: number;
+    orderBy: string;
+    pageSize: number;
+  }) => [...productKeys.all, "list", params] as const,
+  detail: (productId: string) =>
+    [...productKeys.all, "detail", productId] as const,
+};
+
 export const codeitItemKeys = {
   all: ["products"] as const,
   best: (pageSize: number) =>

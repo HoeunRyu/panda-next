@@ -1,5 +1,5 @@
 import { AxiosResponse } from "axios";
-import { instance } from "@/shared/utils/APIs/axiosInstance";
+import { myInstance } from "@/shared/service/myApi/myInstance";
 import { GetProdApiQueryParams, ProductList, OrderByType } from "@/shared/type";
 
 /** 상품 목록 조회
@@ -13,17 +13,17 @@ export const getItemsListAPI = async (
   params: Partial<GetProdApiQueryParams> = {}
 ): Promise<ProductList> => {
   //쿼리 기본값
-  const { page = 1, limit = 10, sort = "recent", keyword = "" } = params;
+  const { page = 1, pageSize = 10, orderBy = "recent", keyword = "" } = params;
 
   try {
-    const response: AxiosResponse<ProductList> = await instance.get(
+    const response: AxiosResponse<ProductList> = await myInstance.get(
       "/products",
       {
-        params: { page, limit, sort, keyword },
+        params: { page, pageSize, orderBy, keyword },
       }
     );
     response.status;
-    // console.log("getItemsList", response.data);
+
     return response.data;
   } catch (err) {
     throw err;

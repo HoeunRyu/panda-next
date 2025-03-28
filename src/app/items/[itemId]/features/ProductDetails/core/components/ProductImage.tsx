@@ -2,8 +2,14 @@ import { useDefaultImg } from "@/shared/hooks/useDefaultImg";
 import { Stack } from "@mui/material";
 
 export const ProductImage = ({ images }: { images: string[] }) => {
+  const formattedImage = images[0]
+    ? `https://panda-prisma.onrender.com${images[0]}`
+    : "";
   const defaultItemImg = "/assets/default_item.png";
-  const { imgSrc, handleImgErr } = useDefaultImg(images[0], defaultItemImg);
+  const { imgSrc, handleImgErr } = useDefaultImg(
+    formattedImage,
+    defaultItemImg
+  );
 
   return (
     <Stack sx={productImageContainerSx}>

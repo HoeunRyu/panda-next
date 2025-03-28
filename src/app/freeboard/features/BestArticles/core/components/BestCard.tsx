@@ -15,11 +15,13 @@ interface BestCardProps {
 }
 
 export const BestCard = ({ article, isLoading, onClick }: BestCardProps) => {
-  //FIXME: 아직 user 정보가 없어서 임시 닉네임 설정
-  const nickname = "총명한판다";
+  const nickname = article.ownerNickname;
   const formattedDate = formatDate(article.createdAt);
+  const formattedImage = article.image
+    ? `https://panda-prisma.onrender.com${article.image}`
+    : "";
   const defaultImg = "/assets/default_item.png";
-  const { imgSrc, handleImgErr } = useDefaultImg(article.image, defaultImg);
+  const { imgSrc, handleImgErr } = useDefaultImg(formattedImage, defaultImg);
 
   return (
     <Stack sx={bestCardStyle} onClick={onClick}>
@@ -57,14 +59,18 @@ export const BestCard = ({ article, isLoading, onClick }: BestCardProps) => {
             />
             <Stack direction="row" alignItems="center" gap="4px">
               <Image
-                src="/assets/favorite_heart.png"
+                src={
+                  article.isLiked
+                    ? "/assets/ic_heart_pink.svg"
+                    : "/assets/ic_heart_gray5.svg"
+                }
                 alt="heart icon"
                 width={16}
                 height={16}
               />
               <Typo
                 className="text14Regular"
-                content={article.favoritesCount.toString()}
+                content={article.likeCount.toString()}
                 color={colorChips.gray500}
               />
             </Stack>

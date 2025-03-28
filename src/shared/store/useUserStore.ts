@@ -1,12 +1,12 @@
 import { createStore } from "./zustand/createStore";
-import { UserInfoResponse } from "../service/codeit/type";
+import { MyUserInfoResponse, UserInfoResponse } from "../service/authTypes";
 
 interface State {
-  userInfo: UserInfoResponse | null;
+  userInfo: MyUserInfoResponse | null;
   isAuthenticated: boolean;
   isInitialized: boolean;
-  setUserInfo: (data: UserInfoResponse | null) => void;
-  updateUserInfo: (data: Partial<UserInfoResponse>) => void;
+  setUserInfo: (data: MyUserInfoResponse | null) => void;
+  updateUserInfo: (data: Partial<MyUserInfoResponse>) => void;
   setIsAuthenticated: (value: boolean) => void;
   setIsInitialized: (value: boolean) => void;
 }

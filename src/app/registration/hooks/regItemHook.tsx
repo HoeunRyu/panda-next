@@ -1,17 +1,14 @@
 import { useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { RegItemInputFields, ValidKey } from "../type";
-import { CodeitProduct } from "@/shared/types/codeitApiType";
-import { postCodeitProductAPI } from "../services/createCodeitItemApi";
+// import { CodeitProduct } from "@/shared/types/codeitApiType";
+// import { postCodeitProductAPI } from "../services/createCodeitItemApi";
 import { useSnackbarStore } from "@/shared/store/useSnackbarStore";
-import { codeitItemKeys } from "@/shared/utils/queryKeys";
+// import { codeitItemKeys, productKeys } from "@/shared/utils/queryKeys";
+import { productKeys } from "@/shared/utils/queryKeys";
 import { useQueryClient } from "@tanstack/react-query";
-
-//XXX:
-//1. input에서 받은 value를 body에 일단 담는다.
-//2. body 업데이트되면 useCallback이 돌면서 리렌더링.
-//3. 그때 유효성 검사 함수를 타면서 에러 ui보여주기
-//4. 모든 필수 필드에 유효한 값이 있을 떄 등록 버튼 활성화
+import { Product } from "@/shared/type";
+import { createItemAPI } from "../services/createItemAPI";
 
 //input 유효성 검사 규칙
 //validate true일때 error
@@ -56,6 +53,8 @@ interface UseRegItemState {
   price?: string;
   tagInput: string;
   tags: string[];
+  images: File[];
+  imageUrls: string[];
 }
 
 export const useRegItem = () => {
@@ -63,7 +62,10 @@ export const useRegItem = () => {
     name: "",
     tagInput: "",
     tags: [],
+    images: [],
+    imageUrls: [],
   });
+  const [showMaxImageError, setShowMaxImageError] = useState(false);
   const router = useRouter();
   const { openSnackbar } = useSnackbarStore();
   const queryClient = useQueryClient();
@@ -131,28 +133,96 @@ export const useRegItem = () => {
     };
   };
 
+  // 이미지 파일 입력 처리
+  const handleImageInput = useCallback(() => {
+    const fileInput = document.createElement("input");
+    fileInput.type = "file";
+    fileInput.accept = "image/*";
+    fileInput.multiple = true;
+
+    fileInput.onchange = (e: Event) => {
+      const files = (e.target as HTMLInputElement).files;
+      if (!files) return;
+
+      // 최대 3개까지만 허용
+      const remainingSlots = 3 - body.images.length;
+      if (remainingSlots <= 0) {
+        setShowMaxImageError(true);
+        setTimeout(() => setShowMaxImageError(false), 3000); // 3초 후 에러 메시지 숨김
+        return;
+      }
+
+      const newFiles = Array.from(files).slice(0, remainingSlots);
+
+      // 파일 크기 체크 (5MB)
+      const validFiles = newFiles.filter((file) => {
+        if (file.size > 5 * 1024 * 1024) {
+          openSnackbar("이미지 크기는 5MB 이하여야 합니다.", "error");
+          return false;
+        }
+        return true;
+      });
+
+      // 이미지 URL 생성 및 상태 업데이트
+      const newUrls = validFiles.map((file) => URL.createObjectURL(file));
+
+      setBody((prev) => ({
+        ...prev,
+        images: [...prev.images, ...validFiles],
+        imageUrls: [...prev.imageUrls, ...newUrls],
+      }));
+    };
+
+    // 이미지가 이미 3개일 때 클릭 시
+    if (body.images.length >= 3) {
+      setShowMaxImageError(true);
+      setTimeout(() => setShowMaxImageError(false), 3000); // 3초 후 에러 메시지 숨김
+      return;
+    }
+
+    fileInput.click();
+  }, [body.images.length, openSnackbar]);
+
+  // 이미지 삭제 처리
+  const handleDeleteImage = useCallback((index: number) => {
+    setBody((prev) => {
+      // 이전 URL 해제
+      URL.revokeObjectURL(prev.imageUrls[index]);
+
+      const newImages = prev.images.filter((_, idx) => idx !== index);
+      const newUrls = prev.imageUrls.filter((_, idx) => idx !== index);
+
+      return {
+        ...prev,
+        images: newImages,
+        imageUrls: newUrls,
+      };
+    });
+  }, []);
+
   //최신 body로 post api 요청
   const usePostItem = useCallback(async (): Promise<void> => {
     try {
-      const { name, description, price, tags } = body;
+      const { name, description, price, tags, images } = body;
 
-      // XXX: 코드잇 상품 등록 api로 수정
+      // XXX: 코드잇 상품 등록 api에서 미션 api로 재수정
       const priceNumber = Number(price);
       const descriptionString = description ?? "";
       const reqBody = {
         name,
         description: descriptionString,
-        price: priceNumber,
+        price: priceNumber.toString(),
         tags,
-        images: [], // XXX: 추후 이미지 업로드 기능 추가 시 사용. 필수 필드라서 현재는 빈 배열로 전달
+        images,
       };
-      // const response: Product = await createItemAPI(reqBody);
-      const response: CodeitProduct = await postCodeitProductAPI(reqBody);
+      const response: Product = await createItemAPI(reqBody);
+      // const response: CodeitProduct = await postCodeitProductAPI(reqBody);
       const itemId = response.id;
-      queryClient.invalidateQueries({ queryKey: codeitItemKeys.all });
+      // queryClient.invalidateQueries({ queryKey: codeitItemKeys.all });
+      queryClient.invalidateQueries({ queryKey: productKeys.all });
       router.push(`/items/${itemId}`);
     } catch (error: any) {
-      if (error?.response.data.message === "Unauthorized") {
+      if (error?.response.data.message === "로그인 후 이용해주세요.") {
         openSnackbar("로그인 후 이용해주세요.", "error");
         router.push("/login");
       } else {
@@ -178,10 +248,6 @@ export const useRegItem = () => {
     const hasAllRequiredFields = Boolean(name && description && price);
     const isDisabled =
       isNameError || isDescError || isPriceError || !hasAllRequiredFields;
-
-    // console.log("=========================");
-    // console.log("모든 필드 유효성 검사: ", isDisabled);
-    // console.log("=========================");
 
     //필수 필드가 모두 유효할 때 true
     return isDisabled;
@@ -229,5 +295,8 @@ export const useRegItem = () => {
     isFormDisabled,
     validRules,
     inputFields,
+    showMaxImageError,
+    handleImageInput,
+    handleDeleteImage,
   };
 };

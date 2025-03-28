@@ -5,7 +5,7 @@ import { EditEllipsis } from "@/shared/components/EditEllipsis";
 import { getRelativeTimeString } from "@/shared/utils/getFormattedDate";
 import Image from "next/image";
 import { CodeitProductComment } from "@/shared/types/codeitApiType";
-import { useCodeitProductCommentActions } from "@/app/items/[itemId]/core/hooks/useProductCommentQuery";
+import { useCodeitProductCommentActions } from "@/app/items/[itemId]/core/hooks/useCodeitProductCommentQuery";
 import { useDefaultImg } from "@/shared/hooks/useDefaultImg";
 import { useState } from "react";
 import { DeleteItemModal } from "@/shared/components/Modal/DeleteItemModal";

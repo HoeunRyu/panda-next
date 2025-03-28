@@ -10,7 +10,6 @@ export function FooterLink() {
       alignItems="center"
       gap={"30px"}
     >
-      {/* TODO: 링크 수정하기 ["/privacy", "/faq"] */}
       <Link className="link-item" href="/" style={{ textDecoration: "none" }}>
         <Typo
           className={"text16Regular"}

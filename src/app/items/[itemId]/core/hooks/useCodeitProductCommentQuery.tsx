@@ -5,7 +5,7 @@ import {
   postCodeitProductCommentAPI,
   patchCodeitProductCommentAPI,
   deleteCodeitProductCommentAPI,
-} from "../services/productCommentService";
+} from "../services/codeitProductCommentService";
 import { codeitProductCommentKeys } from "@/shared/utils/queryKeys";
 import { CodeitProductComment } from "@/shared/types/codeitApiType";
 

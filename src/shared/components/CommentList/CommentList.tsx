@@ -3,6 +3,7 @@ import { useCommentList, CommentType } from "@/shared/hooks/useCommentHook";
 import { CommentCard } from "./CommentCard";
 import { ArticleCommentEmpty } from "@/app/freeboard/[articleId]/core/components/ArticleCommentEmpty";
 import { useEffect, useRef, useCallback } from "react";
+import { ProductInquiryEmpty } from "@/app/items/[itemId]/features/CommentList/core/components/ProductInquiryEmpty";
 
 interface CommentListProps {
   type: CommentType;
@@ -10,7 +11,7 @@ interface CommentListProps {
 }
 
 export const CommentList = ({ type, itemId }: CommentListProps) => {
-  const { comments, fetchNextPage, hasNextPage, isFetchingNextPage, data } =
+  const { comments, fetchNextPage, hasNextPage, isFetchingNextPage } =
     useCommentList(itemId, type);
   const observerRef = useRef<HTMLDivElement>(null);
 
@@ -47,8 +48,7 @@ export const CommentList = ({ type, itemId }: CommentListProps) => {
         type === "articles" ? (
           <ArticleCommentEmpty />
         ) : (
-          // TODO: 나중에 상품 문의 없을 때 컴포넌트 추가해서 수정하기
-          <ArticleCommentEmpty />
+          <ProductInquiryEmpty />
         )
       ) : (
         <>

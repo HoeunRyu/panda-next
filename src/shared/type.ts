@@ -3,42 +3,62 @@ export type ScreenSizeType = "MOBILE" | "TABLET" | "DESKTOP";
 //상품 getAPI 쿼리 파라미터
 export interface GetProdApiQueryParams {
   page?: number;
-  limit?: number;
-  sort?: string;
+  pageSize?: number;
+  orderBy?: string;
   keyword?: string;
 }
 
 //상품 postAPI 쿼리 파라미터
 export interface PostProdApiQueryParams {
   name: string;
-  description?: string;
-  price?: string;
+  description: string;
+  price: string;
   tags?: string[];
-  images?: string[];
+  images?: File[];
 }
 
-//getAPI 응답 객체
+// 상품 patch 쿼리 파라미터
+export interface PatchProdApiQueryParams {
+  productId: string;
+  name: string;
+  description: string;
+  price: string;
+  tags?: string[];
+  images?: (File | string)[];
+}
+
+// 태그 타입
+export interface ProductTag {
+  id: number;
+  tag: string;
+}
+
+//상세 조회 응답 객체
 export interface Product {
   id: number;
   name: string;
   description: string;
   price: number;
   images: string[];
-  tags: string[];
-  favoritesCount: number;
+  ProductTag: ProductTag[];
+  likeCount: number;
+  isLiked: boolean;
+  ownerId: string;
+  ownerNickname: string;
   createdAt: string;
   updatedAt: string;
 }
 
+//상품 목록 조회 응답 객체
 export interface ProductList {
   ProductList: Product[];
-  page: number;
-  limit: number;
-  sort: string;
-  keyword: string;
-  status: number;
   totalPages: number;
   totalProducts: number;
+}
+
+export interface DeleteProductResponse {
+  isSuccess: boolean;
+  message: string;
 }
 
 export type ProductState = Pick<ProductList, "ProductList" | "totalPages">;
@@ -66,7 +86,7 @@ export interface GetArticleApiQueryParams {
 export interface PostArticleApiQueryParams {
   title: string;
   content: string;
-  image?: string;
+  image?: File;
 }
 
 //게시글 getAPI 응답 객체
@@ -75,10 +95,12 @@ export interface Article {
   title: string;
   content: string;
   image: string;
-  favoritesCount: number;
+  likeCount: number;
+  isLiked: boolean;
+  ownerId: string;
+  ownerNickname: string;
   createdAt: string;
   updatedAt: string;
-  deletedAt: string;
 }
 
 export interface ArticleList {
@@ -97,6 +119,10 @@ export interface Comment {
   content: string;
   createdAt: string;
   updatedAt: string;
+  writer: {
+    id: string;
+    nickname: string;
+  };
 }
 
 export interface CommentList {
@@ -104,4 +130,19 @@ export interface CommentList {
   idField: string;
   commentsList: Comment[];
   lastCursor: string | null;
+}
+
+export interface DeleteCommentResponse {
+  isSuccess: boolean;
+  message: string;
+}
+
+export interface ProductLikeResponse {
+  isSuccess: boolean;
+  data: Product;
+}
+
+export interface ArticleLikeResponse {
+  isSuccess: boolean;
+  data: Article;
 }

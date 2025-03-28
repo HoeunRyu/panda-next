@@ -36,7 +36,7 @@ export default function Page() {
     email,
     nickname,
     password: inputPassword.password,
-    passwordConfirmation: inputPassword.passwordConfirmation,
+    // passwordConfirmation: inputPassword.passwordConfirmation,
   });
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {

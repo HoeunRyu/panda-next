@@ -1,6 +1,6 @@
 import { codeitInstance } from "@/shared/service/codeit/codeitInstance";
 import { CodeitProduct } from "@/shared/types/codeitApiType";
-import { AxiosError, AxiosResponse } from "axios";
+import { AxiosResponse } from "axios";
 
 export interface PostCodeitProductApiParams {
   name: string;

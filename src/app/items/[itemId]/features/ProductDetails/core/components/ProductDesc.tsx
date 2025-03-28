@@ -1,10 +1,11 @@
 import { colorChips } from "@/shared/styles/colorChips";
+import { ProductTag } from "@/shared/type";
 import { Typo } from "@/shared/Typo/Typo";
 import { Stack } from "@mui/material";
 
 interface ProductDescProps {
   description: string;
-  tags: string[];
+  tags: ProductTag[];
 }
 
 export const ProductDesc = ({ description, tags }: ProductDescProps) => {
@@ -56,7 +57,7 @@ export const ProductDesc = ({ description, tags }: ProductDescProps) => {
             <Typo
               key={idx}
               className="text16Regular"
-              content={`#${tag}`}
+              content={`#${tag.tag}`}
               customStyle={{
                 backgroundColor: colorChips.gray100,
                 color: colorChips.gray800,

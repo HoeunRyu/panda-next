@@ -2,7 +2,7 @@ import { CircularProgress, Stack } from "@mui/material";
 import { CommentCard } from "./core/components/CommentCard";
 import { useEffect, useRef, useCallback } from "react";
 import { ProductInquiryEmpty } from "./core/components/ProductInquiryEmpty";
-import { useCodeitProductCommentList } from "../../core/hooks/useProductCommentQuery";
+import { useCodeitProductCommentList } from "../../core/hooks/useCodeitProductCommentQuery";
 
 interface CommentListProps {
   itemId: string;

@@ -1,6 +1,6 @@
 import { AxiosResponse } from "axios";
-import { instance } from "@/shared/utils/APIs/axiosInstance";
-import { CommentList } from "@/shared/type";
+import { CommentList, Comment, DeleteCommentResponse } from "@/shared/type";
+import { myInstance } from "./myApi/myInstance";
 
 export interface GetCommentApiProps {
   itemId: string;
@@ -20,7 +20,7 @@ export const getCommentAPI = async ({
   }`;
 
   try {
-    const response: AxiosResponse<CommentList> = await instance.get(url);
+    const response: AxiosResponse<CommentList> = await myInstance.get(url);
     // console.log("getComment", response.data);
     return response.data;
   } catch (err) {
@@ -43,14 +43,11 @@ export const postCommentAPI = async ({
   itemId,
   type,
   params,
-}: PostCommentApiProps): Promise<CommentList> => {
+}: PostCommentApiProps): Promise<Comment> => {
   const url = `/comments/${itemId}?type=${type}`;
 
   try {
-    const response: AxiosResponse<CommentList> = await instance.post(
-      url,
-      params
-    );
+    const response: AxiosResponse<Comment> = await myInstance.post(url, params);
     // console.log("postComment", response.data);
     return response.data;
   } catch (err) {
@@ -71,11 +68,11 @@ export const patchCommentAPI = async ({
   id,
   type,
   params,
-}: PatchCommentApiProps): Promise<CommentList> => {
+}: PatchCommentApiProps): Promise<Comment> => {
   const url = `/comments/${id}?type=${type}`;
 
   try {
-    const response: AxiosResponse<CommentList> = await instance.patch(
+    const response: AxiosResponse<Comment> = await myInstance.patch(
       url,
       params
     );
@@ -95,11 +92,12 @@ export interface DeleteCommentApiProps {
 export const deleteCommentAPI = async ({
   id,
   type,
-}: DeleteCommentApiProps): Promise<CommentList> => {
+}: DeleteCommentApiProps): Promise<DeleteCommentResponse> => {
   const url = `/comments/${id}?type=${type}`;
 
   try {
-    const response: AxiosResponse<CommentList> = await instance.delete(url);
+    const response: AxiosResponse<DeleteCommentResponse> =
+      await myInstance.delete(url);
     // console.log("deleteComment", response.data);
     return response.data;
   } catch (err) {
