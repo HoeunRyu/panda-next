@@ -30,8 +30,9 @@ export const postProductLikeAPI = async ({
   productId,
 }: PostProductFavoriteApiProps): Promise<ProductLikeResponse> => {
   try {
-    const response: AxiosResponse<ProductLikeResponse> =
-      await myInstance.post(`/products/${productId}/like`);
+    const response: AxiosResponse<ProductLikeResponse> = await myInstance.post(
+      `/products/${productId}/like`
+    );
 
     return response.data;
   } catch (err) {
@@ -63,3 +64,5 @@ export const deleteProductLikeAPI = async ({
     return response.data;
   } catch (err) {
     throw err;
+  }
+};
