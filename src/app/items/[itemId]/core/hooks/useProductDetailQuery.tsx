@@ -8,7 +8,7 @@ import {
   patchProductAPI,
   deleteProductAPI,
 } from "../services/productDetailService";
-import { articleKeys, codeitItemKeys } from "@/shared/utils/queryKeys";
+import { productKeys } from "@/shared/utils/queryKeys";
 import { DeleteProductApiProps } from "../services/productDetailService";
 import // CodeitProduct,
 // CodeitProductDetail,
@@ -22,8 +22,7 @@ import {
 export const useGetProductDetail = (productId: string) => {
   if (typeof productId === "string") {
     const { data, isLoading } = useQuery<Product>({
-      queryKey: codeitItemKeys.detail(productId),
-      // queryFn: () => getCodeitProductDetailAPI({ productId: productId }),
+      queryKey: productKeys.detail(productId),
       queryFn: () => getProductDetailAPI({ productId: productId }),
       staleTime: 5 * 60 * 1000,
       gcTime: 10 * 60 * 1000,
@@ -60,10 +59,7 @@ export const useUpdateProduct = () => {
     mutationFn: (params: PatchProdApiQueryParams) => patchProductAPI(params),
     onSuccess: (_, variables) => {
       queryClient.invalidateQueries({
-        queryKey: codeitItemKeys.detail(variables.productId),
-      });
-      queryClient.invalidateQueries({
-        queryKey: articleKeys.all,
+        queryKey: productKeys.all,
       });
     },
   });
@@ -76,10 +72,7 @@ export const useDeleteProduct = () => {
     mutationFn: (params: DeleteProductApiProps) => deleteProductAPI(params),
     onSuccess: (_, variables) => {
       queryClient.invalidateQueries({
-        queryKey: codeitItemKeys.detail(variables.productId),
-      });
-      queryClient.invalidateQueries({
-        queryKey: codeitItemKeys.all,
+        queryKey: productKeys.all,
       });
     },
     onError: (error: any) => {

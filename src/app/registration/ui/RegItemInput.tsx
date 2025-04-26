@@ -31,7 +31,6 @@ export const RegItemInput: React.FC<RegItemInputProps> = ({
 
       onInput(value);
       //input값 저장 후, 태그 input일 때만 input값 초기화해주기.
-      //TODO: 에러났을때는 엔터해도 input초기화 안되게 해보자~
       if (label === "태그") {
         e.target.value = "";
       }

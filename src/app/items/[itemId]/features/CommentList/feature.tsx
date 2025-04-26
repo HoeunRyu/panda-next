@@ -8,6 +8,7 @@ interface CommentListProps {
   itemId: string;
 }
 
+// XXX: 코드잇 api에서 미션 api로 마이그레이션 하면서 사용안하게됨
 export const CommentList = ({ itemId }: CommentListProps) => {
   const { comments, fetchNextPage, hasNextPage, isFetchingNextPage } =
     useCodeitProductCommentList(itemId);

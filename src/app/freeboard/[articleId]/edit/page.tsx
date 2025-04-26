@@ -18,9 +18,10 @@ import {
 } from "../core/hooks/useArticleDetailQuery";
 import { useState, useEffect } from "react";
 import { ArticleImgInput } from "../../core/components/ArticleImgInput";
-
+import { useSnackbarStore } from "@/shared/store/useSnackbarStore";
 export default function Page() {
   const router = useRouter();
+  const { openSnackbar } = useSnackbarStore();
   const { articleId } = useParams();
   const id = Array.isArray(articleId) ? articleId[0] : articleId;
 
@@ -93,7 +94,7 @@ export default function Page() {
       if (!files || !files[0]) return;
 
       if (files[0].size > 5 * 1024 * 1024) {
-        window.alert("이미지 크기는 5MB 이하여야 합니다.");
+        openSnackbar("이미지 크기는 5MB 이하여야 합니다.", "error");
         return;
       }
 
@@ -148,8 +149,13 @@ export default function Page() {
         onSuccess: () => {
           router.push(`/freeboard/${id}`);
         },
-        onError: (error) => {
-          window.alert("게시글 수정에 실패했습니다.");
+        onError: (error: any) => {
+          openSnackbar(
+            error?.response?.data?.message || "게시글 수정에 실패했습니다.",
+            "error"
+          );
+          router.back();
+          throw error;
         },
       }
     );

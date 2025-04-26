@@ -27,30 +27,11 @@ export const useUpdateArticle = () => {
     mutationFn: (params: PatchArticleApiProps) => patchArticleAPI(params),
     onSuccess: (_, variables) => {
       queryClient.invalidateQueries({
-        queryKey: articleKeys.detail(variables.articleId),
-      });
-      queryClient.invalidateQueries({
         queryKey: articleKeys.all,
       });
     },
-  });
-};
-
-export const useDeleteArticle = () => {
-  const queryClient = useQueryClient();
-
-  return useMutation<DeleteCommentResponse, Error, DeleteArticleApiProps>({
-    mutationFn: (params: DeleteArticleApiProps) => deleteArticleAPI(params),
-    onSuccess: (_, variables) => {
-      queryClient.invalidateQueries({
-        queryKey: articleKeys.detail(variables.articleId),
-      });
-      queryClient.invalidateQueries({
-        queryKey: articleKeys.all,
-      });
-    },
-    onError: (error) => {
-      window.alert("게시글 삭제에 실패했습니다.");
+    onError: (error: any) => {
+      throw error;
     },
   });
 };
